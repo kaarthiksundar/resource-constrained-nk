@@ -8,6 +8,7 @@ mutable struct Configuration
     time_limit::Int
     opt_gap::Float64
     k::Int 
+    d::Float64
     use_cplex::Bool 
     parallelize::Bool
     num_workers::Int 
@@ -25,6 +26,7 @@ mutable struct Configuration
         c.time_limit = config["timeout"]
         c.opt_gap = config["gap"]
         c.k = config["k"]
+        c.d = config["distance"]
         c.use_cplex = config["cplex"]
         c.parallelize = config["parallel"]
         c.num_workers = config["workers"]
@@ -41,6 +43,7 @@ get_problem_type(c::Configuration) = c.problem_type
 get_time_limit(c::Configuration) = c.time_limit
 get_opt_gap(c::Configuration) = c.opt_gap
 get_k(c::Configuration) = c.k 
+get_d(c::Configuration) = c.d
 use_cplex(c::Configuration) = c.use_cplex
 use_heuristic(c::Configuration) = c.heuristic 
 use_bt(c::Configuration) = c.bt
@@ -50,15 +53,49 @@ function print_configuration(c::Configuration)
     println("Case           :  $(get_case(c))")
     println("Problem type   :  $(get_problem_type(c))")
     println("k value        :  $(get_k(c))")
+    (get_problem_type(c) == :planar) && (println("d value        :  $(get_d(c)) km"))
     println("Time limit     :  $(get_time_limit(c))")
     println("Optimality gap :  $(get_opt_gap(c)*100)%")
     println("")
     return
 end 
 
+function get_distance(f_lat, f_lon, t_lat, t_lon)
+    R = 6371e3 # radius of earth in meters
+    phi_1 = deg2rad(f_lat)
+    phi_2 = deg2rad(t_lat)
+    del_phi = deg2rad(t_lat - f_lat)
+    del_lambda = deg2rad(t_lon - f_lon)
+
+    a = sin(del_phi/2) * sin(del_phi/2) + cos(phi_1) * cos(phi_2) * sin(del_lambda/2) * sin(del_lambda/2)
+    c = 2 * atan2(sqrt(a), sqrt(1-a))
+    d = R * c 
+
+    return d/1000
+end
+
+function sample_branch(f_lat, f_lon, t_lat, t_lon, d)
+    fractions = collect(linspace(0.0, 1.0, 100))
+    samples = []
+    for f in fractions 
+        (f == 0.0) && (push!(samples, (f_lat, f_lon)); continue)
+        (f == 1.0) && (push!(samples, (t_lat, t_lon)); continue)
+        A = sin((1-f)*d)/sin(d)
+        B = sin(f*d)/sin(d)
+        x = A * cos(deg2rad(f_lat)) * cos(deg2rad(f_lon)) + B * cos(deg2rad(t_lat)) * cos(deg2rad(t_lon))
+        y = A * cos(deg2rad(f_lat)) * sin(deg2rad(f_lon)) + B * cos(deg2rad(t_lat)) * sin(deg2rad(t_lon))
+        z = A * sin(deg2rad(f_lat)) + B * sin(deg2rad(t_lat))
+        lat = atan2(z, sqrt(x*x+y*y))
+        lon = atan2(y, x)
+        push!(samples, (rad2deg(lat), rad2deg(lon)))
+    end     
+    return samples
+end 
+
 mutable struct Problem 
     data::Dict{String,Any}
     ref::Dict{Any,Any}
+    spatial_map::Dict{Any,Any}
     total_load::Float64
     effective_load::Float64
     model::JuMP.Model 
@@ -78,6 +115,7 @@ mutable struct Problem
         p = new()
         p.data = data
         p.ref = PMs.build_ref(data)[:nw][0]
+        p.spatial_map = Dict()
         p.total_load = sum([abs(load["pd"]) for (i, load) in p.ref[:load]]) 
         p.effective_load = 0.0
         p.model = Model()
@@ -94,6 +132,49 @@ mutable struct Problem
     end 
 end
 
+function populate_branch_lengths(p::Problem)
+    for (i, branch) in p.ref[:branch] 
+        f_bus = branch["f_bus"]
+        t_bus = branch["t_bus"]
+        f_lat = p.ref[:bus][f_bus]["latitude"]
+        f_lon = p.ref[:bus][f_bus]["longitude"]
+        t_lat = p.ref[:bus][t_bus]["latitude"]
+        t_lon = p.ref[:bus][t_bus]["longitude"]
+        distance = get_distance(f_lat, f_lon, t_lat, t_lon)
+        p.ref[:branch][i]["length"] = distance
+    end 
+    return
+end 
+
+function populate_spatial_map(p::Problem, c::Configuration)
+    ref = get_ref(p)
+    spatial_map = Dict([i => [] for i in keys(ref[:branch])])
+
+    for (i, branch) in ref[:branch]
+        D = get_d(c)
+        d = branch["length"]
+        f_bus = branch["f_bus"]
+        t_bus = branch["t_bus"]
+        f_lat = p.ref[:bus][f_bus]["latitude"]
+        f_lon = p.ref[:bus][f_bus]["longitude"]
+        t_lat = p.ref[:bus][t_bus]["latitude"]
+        t_lon = p.ref[:bus][t_bus]["longitude"]
+        sampled_branch = sample_branch(f_lat, f_lon, t_lat, t_lon, d)
+        for (j, bus) in ref[:bus]
+            bus_lat = bus["latitude"]
+            bus_lon = bus["longitude"]
+            for (lat, lon) in sampled_branch
+                if (get_distance(bus_lat, bus_lon, lat, lon) <= get_d(c)/2)
+                    push!(spatial_map[i], j)
+                    break
+                end 
+            end 
+        end 
+    end 
+    set_spatial_map(p, spatial_map)
+    return 
+end
+
 function print_total_load(p::Problem)
     println("Total load     :  $(round(get_total_load(p); digits=2))")
     println("")
@@ -108,6 +189,7 @@ end
 
 get_data(p::Problem) = p.data
 get_ref(p::Problem) = p.ref 
+get_spatial_map(p::Problem) = p.spatial_map
 get_total_load(p::Problem) = p.total_load
 get_effective_load(p::Problem) = p.effective_load
 get_model(p::Problem) = p.model 
@@ -121,6 +203,10 @@ get_iteration_count(p::Problem) = p.iterations
 get_dual_bounds(p::Problem) = p.dual_bounds
 get_bus_ids(p::Problem) = p.bus_ids
 
+function set_spatial_map(p::Problem, spatial_map)
+    p.spatial_map = spatial_map
+    return 
+end 
 
 function set_upper_bound(p::Problem, ub) 
     p.upper_bound = ub
@@ -190,7 +276,7 @@ end
 
 function data_check(p::Problem, c::Configuration) 
     if get_problem_type(c) == :planar
-        for (i, bus) in get_ref(p)
+        for (i, bus) in get_ref(p)[:bus]
             !(haskey(bus, "latitude")) && (error("lat-lon information missing and problem type specified as :planar"))
             !(haskey(bus, "longitude")) && (error("lat-lon information missing and problem type specified as :planar"))
         end

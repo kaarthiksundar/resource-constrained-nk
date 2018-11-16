@@ -11,28 +11,35 @@ function bt(p::Problem, c::Configuration)
         @variable(m, x[i in keys(ref[:branch])], Bin)
         @constraint(m, budget, sum(x) == get_k(c))
     elseif get_problem_type(c) == :topological 
-        @variable(p.model, x[keys(p.ref[:branch])], Bin)
-        @variable(p.model, y[i in keys(p.ref[:bus])], Bin)
-        @variable(p.model, f[(l,i,j) in p.ref[:arcs]] >= 0)
-        @variable(p.model, dummy_x[i in keys(p.ref[:bus])], Bin)
-        @variable(p.model, dummy_f[i in keys(p.ref[:bus])] >= 0)        
+        # connectivty enforced using single commodity flow
+        @variable(m, x[i in keys(ref[:branch])], Bin)
         
-        @constraint(p.model, budget, sum(x) == get_k(c))
-        @constraint(p.model, sum(dummy_x) == 1)
+        @variable(m, y[i in keys(ref[:bus])], Bin)
+        @variable(m, f[(l,i,j) in ref[:arcs]] >= 0)
+        @variable(m, dummy_x[i in keys(ref[:bus])], Bin)
+        @variable(m, dummy_f[i in keys(ref[:bus])] >= 0)        
+        
+        @constraint(m, budget, sum(x) == get_k(c))
+        @constraint(m, sum(dummy_x) == 1)
         
         # single commodity flow variable bounds
-        @constraint(p.model, [(l,i,j) in p.ref[:arcs]], f[(l,i,j)] <= get_k(c) * x[l])
-        @constraint(p.model, [i in keys(p.ref[:bus])], dummy_f[i] <= (get_k(c) + 1) * dummy_x[i])
+        @constraint(m, [(l,i,j) in ref[:arcs]], f[(l,i,j)] <= get_k(c) * x[l])
+        @constraint(m, [i in keys(ref[:bus])], dummy_f[i] <= (get_k(c) + 1) * dummy_x[i])
 
         # connecting y and x variables
-        @constraint(p.model, [i in keys(p.ref[:branch])], x[i] <= y[p.ref[:branch][i]["f_bus"]])
-        @constraint(p.model, [i in keys(p.ref[:branch])], x[i] <= y[p.ref[:branch][i]["t_bus"]])
+        @constraint(m, [i in keys(ref[:branch])], x[i] <= y[ref[:branch]["f_bus"]])
+        @constraint(m, [i in keys(ref[:branch])], x[i] <= y[ref[:branch]["t_bus"]])
 
         # single commodity flow balance constraints
-        @constraint(p.model, [k in keys(p.ref[:bus])], dummy_f[k] + sum(f[(l,j,i)] - f[(l,i,j)] for (l,i,j) in p.ref[:bus_arcs][k]) == y[k])
+        @constraint(m, [k in keys(ref[:bus])], dummy_f[k] + sum(f[(l,j,i)] - f[(l,i,j)] for (l,i,j) in ref[:bus_arcs][k]) == y[k])
     else # planar
-        @variable(m, x[i in keys(ref[:branch])], Bin)
-        @constraint(m, budget, sum(x) == get_k(c))
+        spatial_map = get_spatial_map(p)
+        @variable(m, x[keys(ref[branch])], Bin)
+        @variable(m, y[i in keys(ref[:bus])], Bin)
+
+        @constraint(m, budget, sum(x) <= get_k(c))
+        @constraint(m, sum(y) == 1)
+        @constraint(m, [i in keys(ref[:branch])], x[i] <= sum(y[j] for j in spatial_map[i]))
     end 
 
     populate_bt_model(m, ref)

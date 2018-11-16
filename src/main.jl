@@ -32,7 +32,13 @@ print_configuration(configuration)
 
 # populate problem data
 problem = Problem(PMs.parse_file(get_case(configuration)))
-data_check(problem, configuration)
+if (get_problem_type(configuration) == :planar) 
+    data_check(problem, configuration)
+    populate_branch_lengths(problem)
+    populate_spatial_map(problem, configuration)
+end 
+
+# preprocessing and heuristic runs
 nontight_lines = Dict(:lb => [], :ub => [])
 (use_bt(configuration)) && (nontight_lines = bt(problem, configuration))
 (use_heuristic(configuration)) && (run_heuristic(problem, configuration))
@@ -41,12 +47,9 @@ set_effective_load(problem)
 print_total_load(problem)
 print_effective_load(problem)
 
+# create and solve model
 initialize_dual_bounds(problem, configuration, nontight_lines)
-
 populate_model(problem, configuration)
-
-# print table header 
 table = Table() 
 print_table_header(table) 
-
 solve(problem, configuration, table)

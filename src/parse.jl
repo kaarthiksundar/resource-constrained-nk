@@ -34,10 +34,16 @@ function parse_commandline()
         arg_type = Int 
         default = 2
 
+        "--distance", "-d"
+        help = "spatial impact radius in km"
+        arg_type = Float64
+        default = 500.0
+
         "--cplex"
         help = "flag for using cplex as the LP and MILP solver"
         action = :store_true
 
+        # parallel and workers option are not used
         "--parallel"
         help = "flag for performing parallel solves in dual variable bound computation"
         action = :store_true

@@ -35,6 +35,18 @@ function populate_model(p::Problem, c::Configuration)
         # eta and objective
         @variable(p.model, 0 <= eta <= 1e4)
         @objective(p.model, Max, eta)
+    else # :planar 
+        spatial_map = get_spatial_map(p)
+        @variable(p.model, x[keys(p.ref[:branch])], Bin)
+        @variable(p.model, y[i in keys(p.ref[:bus])], Bin)
+
+        @constraint(p.model, budget, sum(x) <= get_k(c))
+        @constraint(p.model, sum(y) == 1)
+        @constraint(p.model, [i in keys(p.ref[:branch])], x[i] <= sum(y[j] for j in spatial_map[i]))
+
+        # eta and objective
+        @variable(p.model, 0 <= eta <= 1e4)
+        @objective(p.model, Max, eta)
     end 
     return
 end 

@@ -59,10 +59,14 @@ function run_heuristic(p::Problem, c::Configuration)
 
         # single commodity flow balance constraints
         @constraint(m, [k in keys(ref[:bus])], dummy_f[k] + sum(f[(l,j,i)] - f[(l,i,j)] for (l,i,j) in ref[:bus_arcs][k]) == y1[k])
-
     else # planar
-        @variable(m, x[i in keys(ref[:branch])], Bin)
-        @constraint(m, budget, sum(x) == get_k(c))
+        spatial_map = get_spatial_map(p)
+        @variable(m, x[keys(ref[branch])], Bin)
+        @variable(m, y1[i in keys(ref[:bus])], Bin)
+
+        @constraint(m, budget, sum(x) <= get_k(c))
+        @constraint(m, sum(y1) == 1)
+        @constraint(m, [i in keys(ref[:branch])], x[i] <= sum(y1[j] for j in spatial_map[i]))
     end 
 
     @variable(m, dummy_edges[i in gen_buses] == 0)

@@ -13,7 +13,8 @@ function solve(p::Problem, c::Configuration, t::Table)
             (status == :Infeasible) && (print_table_footer(t); termination_flag = 1; break)
             set_upper_bound(p, getobjectivevalue(p.model))
             set_current_solution(p)
-            @assert length(get_current_solution(p)) == c.k
+            (get_problem_type(c) != :planar) && (@assert length(get_current_solution(p)) == c.k)
+            (get_problem_type(c) != :planar) && (@assert length(get_current_solution(p)) <= c.k)
         end
 
         # create inner problem using interdiction plan 

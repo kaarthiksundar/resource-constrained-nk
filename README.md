@@ -1,1 +1,1 @@
-# Topological and Spatial N-k Interdiction Problems in Power Systems
+## Topological and Spatial N-k Interdiction in Power Systems
