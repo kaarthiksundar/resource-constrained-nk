@@ -1,0 +1,23 @@
+julia main.jl --file pglib_opf_case24_ieee_rts__api.m --type planar -d 10 -k 2 --cplex
+julia main.jl --file pglib_opf_case24_ieee_rts__api.m --type planar -d 10 -k 3 --cplex
+julia main.jl --file pglib_opf_case24_ieee_rts__api.m --type planar -d 10 -k 4 --cplex
+julia main.jl --file pglib_opf_case24_ieee_rts__api.m --type planar -d 10 -k 5 --cplex
+julia main.jl --file pglib_opf_case24_ieee_rts__api.m --type planar -d 10 -k 6 --cplex
+
+julia main.jl --file pglib_opf_case24_ieee_rts__api.m --type planar -d 10 -k 2 --bt --cplex
+julia main.jl --file pglib_opf_case24_ieee_rts__api.m --type planar -d 10 -k 3 --bt --cplex
+julia main.jl --file pglib_opf_case24_ieee_rts__api.m --type planar -d 10 -k 4 --bt --cplex
+julia main.jl --file pglib_opf_case24_ieee_rts__api.m --type planar -d 10 -k 5 --bt --cplex
+julia main.jl --file pglib_opf_case24_ieee_rts__api.m --type planar -d 10 -k 6 --bt --cplex
+
+julia main.jl --file pglib_opf_case24_ieee_rts__api.m --type topological -k 2 --cplex
+julia main.jl --file pglib_opf_case24_ieee_rts__api.m --type topological -k 3 --cplex
+julia main.jl --file pglib_opf_case24_ieee_rts__api.m --type topological -k 4 --cplex
+julia main.jl --file pglib_opf_case24_ieee_rts__api.m --type topological -k 5 --cplex
+julia main.jl --file pglib_opf_case24_ieee_rts__api.m --type topological -k 6 --cplex
+
+julia main.jl --file pglib_opf_case24_ieee_rts__api.m --type topological -k 2 --bt --cplex
+julia main.jl --file pglib_opf_case24_ieee_rts__api.m --type topological -k 3 --bt --cplex
+julia main.jl --file pglib_opf_case24_ieee_rts__api.m --type topological -k 4 --bt --cplex
+julia main.jl --file pglib_opf_case24_ieee_rts__api.m --type topological -k 5 --bt --cplex
+julia main.jl --file pglib_opf_case24_ieee_rts__api.m --type topological -k 6 --bt --cplex

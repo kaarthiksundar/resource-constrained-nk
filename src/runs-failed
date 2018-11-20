@@ -1,0 +1,5 @@
+julia main.jl --file pglib_opf_case24_ieee_rts__api.m --type topological -k 2 --bt --cplex
+julia main.jl --file pglib_opf_case24_ieee_rts__api.m --type topological -k 3 --bt --cplex
+julia main.jl --file pglib_opf_case24_ieee_rts__api.m --type topological -k 4 --bt --cplex
+julia main.jl --file pglib_opf_case24_ieee_rts__api.m --type topological -k 5 --bt --cplex
+julia main.jl --file pglib_opf_case24_ieee_rts__api.m --type topological -k 6 --bt --cplex

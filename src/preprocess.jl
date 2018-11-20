@@ -27,8 +27,8 @@ function bt(p::Problem, c::Configuration)
         @constraint(m, [i in keys(ref[:bus])], dummy_f[i] <= (get_k(c) + 1) * dummy_x[i])
 
         # connecting y and x variables
-        @constraint(m, [i in keys(ref[:branch])], x[i] <= y[ref[:branch]["f_bus"]])
-        @constraint(m, [i in keys(ref[:branch])], x[i] <= y[ref[:branch]["t_bus"]])
+        @constraint(m, [i in keys(ref[:branch])], x[i] <= y[ref[:branch][i]["f_bus"]])
+        @constraint(m, [i in keys(ref[:branch])], x[i] <= y[ref[:branch][i]["t_bus"]])
 
         # single commodity flow balance constraints
         @constraint(m, [k in keys(ref[:bus])], dummy_f[k] + sum(f[(l,j,i)] - f[(l,i,j)] for (l,i,j) in ref[:bus_arcs][k]) == y[k])
