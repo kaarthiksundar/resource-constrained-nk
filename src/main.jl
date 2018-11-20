@@ -53,3 +53,5 @@ populate_model(problem, configuration)
 table = Table() 
 print_table_header(table) 
 solve(problem, configuration, table)
+
+write_result(problem, configuration)

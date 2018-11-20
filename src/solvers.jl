@@ -32,11 +32,11 @@ function solve(p::Problem, c::Configuration, t::Table)
 
         # print log 
         update_table(p, t, time)
+        set_computation_time(p, t)
         print_table_line(t, c)
     end 
 
     (termination_flag == 0) && (print_table_footer(t))
-    println(get_current_solution(p))
     return 
 end
 

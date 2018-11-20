@@ -79,6 +79,15 @@ function solve_inner_problem(prob::Problem, c::Configuration, model=Model())
     if (get_current_incumbent(prob) - get_best_incumbent(prob) > 1e-4) 
         set_best_solution(prob, get_current_solution(prob))
         set_best_incumbent(prob, get_current_incumbent(prob))
+        for (i, bus) in ref[:bus]
+            bus_loads = [ref[:load][l] for l in ref[:bus_loads][i]]
+            if (length(bus_loads) > 0)
+                bus_load_shed = [getvalue(ld[load["index"]]) for load in bus_loads]
+                bus_ld_obj = [ld_obj[load["index"]] for load in bus_loads]
+                bus_pd = [load["pd"] for load in bus_loads]
+                prob.bus_load_shed[i] = sum(bus_load_shed .* bus_ld_obj .* bus_pd)
+            end
+        end 
     end 
 
     update_opt_gap(prob)

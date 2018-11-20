@@ -34,7 +34,7 @@ function bt(p::Problem, c::Configuration)
         @constraint(m, [k in keys(ref[:bus])], dummy_f[k] + sum(f[(l,j,i)] - f[(l,i,j)] for (l,i,j) in ref[:bus_arcs][k]) == y[k])
     else # planar
         spatial_map = get_spatial_map(p)
-        @variable(m, x[keys(ref[branch])], Bin)
+        @variable(m, x[keys(ref[:branch])], Bin)
         @variable(m, y[i in keys(ref[:bus])], Bin)
 
         @constraint(m, budget, sum(x) <= get_k(c))

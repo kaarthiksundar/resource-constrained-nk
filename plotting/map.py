@@ -60,5 +60,38 @@ for key, value in position.items():
     folium.CircleMarker(location=list(value), radius=2, weight=1.5, color='black', fill_color='brown', fill_opacity=1).add_to(m)
 
 
+m.save('wecc240.html')
 
-m.save('output.html')
+m = folium.Map(zoom_start=5, tiles=tiles, attr=attr, zoom_control=False, width='38%', height='95%', prefer_canvas=True)
+f = open('../data/24_geo.csv', 'r')
+reader = csv.reader(f)
+rows = []  
+for row in reader:
+    rows.append(row)
+position = {}
+for i in range(1, len(rows)):
+    row = rows[i]
+    bus = int(row[0])
+    lat = float(row[1])
+    lon = float(row[2])
+    position[bus] = (lat, lon)
+    
+f = open('../data/24_branches.csv', 'r')
+reader = csv.reader(f)
+rows = []
+for row in reader:
+    rows.append(row)
+branches = {}
+for i in range(0, len(rows)):
+    row = rows[i]
+    f_bus = int(row[0])
+    t_bus = int(row[1])
+    branches[i] = [list(position[f_bus]), list(position[t_bus])]
+
+for key, value in branches.items():
+    folium.PolyLine(value, color='green', weight=1.5).add_to(m)
+
+for key, value in position.items():
+    folium.CircleMarker(location=list(value), radius=2, weight=1.5, color='black', fill_color='brown', fill_opacity=1).add_to(m)
+
+m.save('rts96.html')

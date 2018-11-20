@@ -107,7 +107,8 @@ mutable struct Problem
     opt_gap::Float64
     iterations::Int
     dual_bounds::Dict
-    bus_ids::Vector{Int}
+    bus_load_shed::Dict
+    computation_time::Float64
     
     function Problem(data)
         @assert !haskey(data, "multinetwork")
@@ -127,7 +128,8 @@ mutable struct Problem
         p.opt_gap = Inf
         p.iterations = 0
         p.dual_bounds = Dict()
-        p.bus_ids = Vector{Int}()
+        p.bus_load_shed = Dict([i => 0.0 for i in keys(p.ref[:bus])])
+        p.computation_time = 0.0
         return p
     end 
 end
@@ -201,7 +203,8 @@ get_current_incumbent(p::Problem) = p.current_incumbent
 get_opt_gap(p::Problem) = p.opt_gap 
 get_iteration_count(p::Problem) = p.iterations
 get_dual_bounds(p::Problem) = p.dual_bounds
-get_bus_ids(p::Problem) = p.bus_ids
+get_bus_load_shed(p::Problem) = p.bus_load_shed
+get_computation_time(p::Problem) = p.computation_time
 
 function set_spatial_map(p::Problem, spatial_map)
     p.spatial_map = spatial_map
@@ -284,71 +287,6 @@ function data_check(p::Problem, c::Configuration)
     return 
 end 
 
-mutable struct Result 
-    status::Symbol 
-    objective::Float64 
-    solution::Vector{Int}
-    bound::Float64
-    time::Float64 
-    opt_gap::Float64
-    bus_ids::Vector{Int}
-    
-    function Result() 
-        r = new()
-        r.status = :Unknown
-        r.objective = NaN 
-        r.solution = Vector{Int}()
-        r.bound = NaN 
-        r.time = NaN 
-        r.opt_gap = NaN
-        r.bus_ids = Vector{Int}()
-        return r
-    end 
-end 
-
-get_status(r::Result) = r.status 
-get_objective(r::Result) = r.objective
-get_solution(r::Result) = r.solution 
-get_bound(r::Result) = r.bound 
-get_time(r::Result) = r.time 
-get_opt_gap(r::Result) = r.opt_gap 
-get_bus_ids(r::Result) = r.bus_ids
-
-function set_status(r::Result, status::Symbol)
-    r.status = status 
-    return 
-end 
-
-function set_objective(r::Result, obj::Float64)
-    r.objective = obj 
-    return 
-end 
-
-function set_bound(r::Result, bound::Float64)
-    r.bound = bound 
-    return 
-end 
-
-function set_solution(r::Result, sol::Vector{Int})
-    r.solution = sol 
-    return 
-end 
-
-function set_time(r::Result, time::Float64) 
-    r.time = time 
-    return 
-end 
-
-function set_opt_gap(r::Result, gap::Float64)
-    r.opt_gap = gap
-    return 
-end 
-
-function set_bus_ids(r::Result, bus_ids::Vector{Int})
-    r.bus_ids = bus_ids
-    return 
-end 
-
 mutable struct Table
     fields::Dict{Symbol,Any}
     field_chars::Dict{Symbol,Any}
@@ -373,6 +311,11 @@ mutable struct Table
         t.total_field_chars = 28*2 + 12*3
         return t
     end 
+end 
+
+function set_computation_time(p::Problem, t::Table)
+    p.computation_time = t.fields[:Time]
+    return 
 end 
 
 function update_table(p::Problem, t::Table, time::Float64)
@@ -470,4 +413,51 @@ function get_table_line(t::Table, c::Configuration)
     end 
 
     return line 
+end 
+
+function write_result(p::Problem, c::Configuration)
+    k = get_k(c)
+    problem_type = get_problem_type(c)
+    
+    ref = get_ref(p)
+    num_buses = length(get_ref(p)[:bus]) 
+    filename = "../output/$num_buses-$k-"
+
+    if (problem_type != :planar)
+        filename *= "$problem_type-"
+    else
+        filename *= "$problem_type-$(Int(get_d(c)))-"
+    end 
+
+    if use_bt(c) 
+        filename *= "optimal.txt"
+    else 
+        filename *= "heuristic.txt"
+    end 
+
+    open(filename, "w") do f 
+        write(f, "case file name => $(get_case(c))\n")
+        write(f, "k => $k\n")
+        write(f, "problem type => $problem_type\n")
+        (problem_type == :planar) && (write(f, "d => $(get_d(c))\n"))
+        write(f, "total load => $(get_total_load(p))\n")
+        write(f, "load shed value => $(round(get_best_incumbent(p); digits=2))\n")
+        write(f, "iterations => $(get_iteration_count(p))\n")
+        (get_opt_gap(p) <= 0.0) && (write(f, "opt gap => 0.00\n"))
+        (get_opt_gap(p) > 0.0) && (write(f, "opt gap => $(round(get_opt_gap(p)*100; digits=2))\n"))
+        write(f, "interdicted branches\n")
+        for i in get_best_solution(p)
+            f_bus = ref[:branch][i]["f_bus"]
+            t_bus = ref[:branch][i]["t_bus"]
+            write(f, "$f_bus $t_bus\n")
+        end 
+        write(f, "bus load shed values\n")
+        for (i, load_shed) in get_bus_load_shed(p)
+            if (load_shed > 0.0)
+                write(f, "$i $(round(load_shed; digits=2)) \n")
+            end 
+        end
+        write(f, "time => $(round(get_computation_time(p); digits=2))") 
+    end 
+    
 end 
