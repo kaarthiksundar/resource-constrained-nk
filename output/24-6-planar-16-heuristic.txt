@@ -1,22 +1,25 @@
 case file name => ../data/pglib_opf_case24_ieee_rts__api.m
-k => 4
+k => 6
 problem type => planar
-d => 10.0
-center bus id => 15
+d => 16.0
+center bus id => 9
 total load => 54.7046
-load shed value => 10.98
-iterations => 14
-opt gap => 0.00
+load shed value => 15.96
+iterations => 11
+opt gap => 0.0
 interdicted branches
+3 24
+12 13
 14 16
-10 12
-9 12
+2 6
+12 23
 11 13
 bus load shed values
-10 3.74 
-8 3.28 
-6 0.59 
+10 2.9 
+8 2.15 
+6 2.61 
 4 1.42 
+3 1.79 
 5 1.36 
-14 0.59 
-time => 3.64
+14 3.72 
+time => 3.1

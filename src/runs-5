@@ -1,0 +1,11 @@
+julia main.jl --file pglib_opf_case240_pserc__api.m -k 2 --cplex
+julia main.jl --file pglib_opf_case240_pserc__api.m -k 3 --cplex
+julia main.jl --file pglib_opf_case240_pserc__api.m -k 4 --cplex
+julia main.jl --file pglib_opf_case240_pserc__api.m -k 5 --cplex
+julia main.jl --file pglib_opf_case240_pserc__api.m -k 6 --cplex
+
+julia main.jl --file pglib_opf_case24_ieee_rts__api.m -k 2 --cplex
+julia main.jl --file pglib_opf_case24_ieee_rts__api.m -k 3 --cplex
+julia main.jl --file pglib_opf_case24_ieee_rts__api.m -k 4 --cplex
+julia main.jl --file pglib_opf_case24_ieee_rts__api.m -k 5 --cplex
+julia main.jl --file pglib_opf_case24_ieee_rts__api.m -k 6 --cplex

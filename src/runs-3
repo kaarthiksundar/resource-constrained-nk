@@ -1,0 +1,12 @@
+julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 50 -k 2 --cplex
+julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 50 -k 3 --cplex
+julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 50 -k 4 --cplex
+julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 50 -k 5 --cplex
+julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 50 -k 6 --cplex
+
+julia main.jl --file pglib_opf_case240_pserc__api.m --type topological -k 2 --cplex
+julia main.jl --file pglib_opf_case240_pserc__api.m --type topological -k 3 --cplex
+julia main.jl --file pglib_opf_case240_pserc__api.m --type topological -k 4 --cplex
+julia main.jl --file pglib_opf_case240_pserc__api.m --type topological -k 5 --cplex
+julia main.jl --file pglib_opf_case240_pserc__api.m --type topological -k 6 --cplex
+

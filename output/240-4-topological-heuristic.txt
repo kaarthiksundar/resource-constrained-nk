@@ -1,0 +1,18 @@
+case file name => ../data/pglib_opf_case240_pserc__api.m
+k => 4
+problem type => topological
+total load => 1901.9428999999998
+load shed value => 222.49
+iterations => 5
+opt gap => 0.88
+interdicted branches
+5002 5032
+5001 5031
+4201 5001
+5001 5002
+bus load shed values
+5001 99.4 
+5003 8.07 
+5002 102.44 
+4104 12.58 
+time => 9.72
