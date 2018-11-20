@@ -79,6 +79,7 @@ function solve_inner_problem(prob::Problem, c::Configuration, model=Model())
     if (get_current_incumbent(prob) - get_best_incumbent(prob) > 1e-4) 
         set_best_solution(prob, get_current_solution(prob))
         set_best_incumbent(prob, get_current_incumbent(prob))
+        (get_problem_type(c) == :planar) && (set_center_bus_id(prob))
         for (i, bus) in ref[:bus]
             bus_loads = [ref[:load][l] for l in ref[:bus_loads][i]]
             if (length(bus_loads) > 0)

@@ -108,6 +108,7 @@ mutable struct Problem
     iterations::Int
     dual_bounds::Dict
     bus_load_shed::Dict
+    center_bus_id::Int
     computation_time::Float64
     
     function Problem(data)
@@ -129,6 +130,7 @@ mutable struct Problem
         p.iterations = 0
         p.dual_bounds = Dict()
         p.bus_load_shed = Dict([i => 0.0 for i in keys(p.ref[:bus])])
+        p.center_bus_id = 0
         p.computation_time = 0.0
         return p
     end 
@@ -204,6 +206,7 @@ get_opt_gap(p::Problem) = p.opt_gap
 get_iteration_count(p::Problem) = p.iterations
 get_dual_bounds(p::Problem) = p.dual_bounds
 get_bus_load_shed(p::Problem) = p.bus_load_shed
+get_center_bus_id(p::Problem) = p.center_bus_id
 get_computation_time(p::Problem) = p.computation_time
 
 function set_spatial_map(p::Problem, spatial_map)
@@ -223,6 +226,14 @@ end
 
 function set_best_incumbent(p::Problem, lb) 
     p.best_incumbent = lb
+    return 
+end
+
+function set_center_bus_id(p::Problem)
+    y = getindex(p.model, :y)
+    for (i, bus) in get_ref(p)[:bus]
+        (getvalue(y[i]) > 0.9) && (p.center_bus_id=i; return)
+    end 
     return 
 end
 
@@ -440,6 +451,7 @@ function write_result(p::Problem, c::Configuration)
         write(f, "k => $k\n")
         write(f, "problem type => $problem_type\n")
         (problem_type == :planar) && (write(f, "d => $(get_d(c))\n"))
+        (problem_type == :planar) && (write(f, "center bus id => $(get_center_bus_id(p))\n"))
         write(f, "total load => $(get_total_load(p))\n")
         write(f, "load shed value => $(round(get_best_incumbent(p); digits=2))\n")
         write(f, "iterations => $(get_iteration_count(p))\n")
