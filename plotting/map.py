@@ -62,6 +62,19 @@ for key, value in position.items():
 
 m.save('wecc240.html')
 
+# traditional 
+k = 6 
+file = '../output/240-{}-plain.heuristic.txt'.format(k)
+f = open(file, 'r')
+
+
+
+# planar 
+
+
+# topological
+
+'''
 m = folium.Map(zoom_start=5, tiles=tiles, attr=attr, zoom_control=False, width='38%', height='95%', prefer_canvas=True)
 f = open('../data/24_geo.csv', 'r')
 reader = csv.reader(f)
@@ -95,3 +108,4 @@ for key, value in position.items():
     folium.CircleMarker(location=list(value), radius=2, weight=1.5, color='black', fill_color='brown', fill_opacity=1).add_to(m)
 
 m.save('rts96.html')
+'''
