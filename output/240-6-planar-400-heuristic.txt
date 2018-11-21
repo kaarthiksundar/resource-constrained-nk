@@ -1,21 +1,24 @@
 case file name => ../data/pglib_opf_case240_pserc__api.m
-k => 4
+k => 6
 problem type => planar
-d => 500.0
-center bus id => 4201
+d => 400.0
+center bus id => 4231
 total load => 1901.9428999999998
-load shed value => 233.99
+load shed value => 247.51
 iterations => 11
-opt gap => 0.57
+opt gap => 0.28
 interdicted branches
-4102 4132
-4101 4131
 4202 4232
 5001 5031
+4201 4231
+4004 4005
+4004 4005
+4004 4005
 bus load shed values
-4202 59.82 
-6104 1.48 
-4201 15.81 
+6104 1.26 
+4102 6.31 
+4201 75.63 
 5001 99.4 
-4203 57.48 
-time => 5.22
+4203 51.85 
+4101 13.06 
+time => 5.68

@@ -1,60 +1,59 @@
-julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 60 -k 2 --cplex
-julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 60 -k 3 --cplex
-julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 60 -k 4 --cplex
-julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 60 -k 5 --cplex
-julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 60 -k 6 --cplex
-
-julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 70 -k 2 --cplex
-julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 70 -k 3 --cplex
-julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 70 -k 4 --cplex
-julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 70 -k 5 --cplex
-julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 70 -k 6 --cplex
-
-julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 80 -k 2 --cplex
-julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 80 -k 3 --cplex
-julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 80 -k 4 --cplex
-julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 80 -k 5 --cplex
-julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 80 -k 6 --cplex
-
-
-julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 90 -k 2 --cplex
-julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 90 -k 3 --cplex
-julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 90 -k 4 --cplex
-julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 90 -k 5 --cplex
-julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 90 -k 6 --cplex
-
 julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 100 -k 2 --cplex
 julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 100 -k 3 --cplex
 julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 100 -k 4 --cplex
 julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 100 -k 5 --cplex
 julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 100 -k 6 --cplex
 
-julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 110 -k 2 --cplex
-julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 110 -k 3 --cplex
-julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 110 -k 4 --cplex
-julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 110 -k 5 --cplex
-julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 110 -k 6 --cplex
+julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 200 -k 2 --cplex
+julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 200 -k 3 --cplex
+julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 200 -k 4 --cplex
+julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 200 -k 5 --cplex
+julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 200 -k 6 --cplex
 
-julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 120 -k 2 --cplex
-julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 120 -k 3 --cplex
-julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 120 -k 4 --cplex
-julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 120 -k 5 --cplex
-julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 120 -k 6 --cplex
+julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 500 -k 2 --cplex
+julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 500 -k 3 --cplex
+julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 500 -k 4 --cplex
+julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 500 -k 5 --cplex
+julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 500 -k 6 --cplex
 
-julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 130 -k 2 --cplex
-julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 130 -k 3 --cplex
-julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 130 -k 4 --cplex
-julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 130 -k 5 --cplex
-julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 130 -k 6 --cplex
+julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 300 -k 2 --cplex
+julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 300 -k 3 --cplex
+julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 300 -k 4 --cplex
+julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 300 -k 5 --cplex
+julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 300 -k 6 --cplex
 
-julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 140 -k 2 --cplex
-julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 140 -k 3 --cplex
-julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 140 -k 4 --cplex
-julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 140 -k 5 --cplex
-julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 140 -k 6 --cplex
+julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 400 -k 2 --cplex
+julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 400 -k 3 --cplex
+julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 400 -k 4 --cplex
+julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 400 -k 5 --cplex
+julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 400 -k 6 --cplex
 
-julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 150 -k 2 --cplex
-julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 150 -k 3 --cplex
-julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 150 -k 4 --cplex
-julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 150 -k 5 --cplex
-julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 150 -k 6 --cplex
+julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 600 -k 2 --cplex
+julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 600 -k 3 --cplex
+julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 600 -k 4 --cplex
+julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 600 -k 5 --cplex
+julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 600 -k 6 --cplex
+
+julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 700 -k 2 --cplex
+julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 700 -k 3 --cplex
+julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 700 -k 4 --cplex
+julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 700 -k 5 --cplex
+julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 700 -k 6 --cplex
+
+julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 800 -k 2 --cplex
+julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 800 -k 3 --cplex
+julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 800 -k 4 --cplex
+julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 800 -k 5 --cplex
+julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 800 -k 6 --cplex
+
+julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 900 -k 2 --cplex
+julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 900 -k 3 --cplex
+julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 900 -k 4 --cplex
+julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 900 -k 5 --cplex
+julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 900 -k 6 --cplex
+
+julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 1000 -k 2 --cplex
+julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 1000 -k 3 --cplex
+julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 1000 -k 4 --cplex
+julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 1000 -k 5 --cplex
+julia main.jl --file pglib_opf_case240_pserc__api.m --type planar -d 1000 -k 6 --cplex

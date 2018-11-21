@@ -5,7 +5,7 @@ d => 500.0
 center bus id => 4201
 total load => 1901.9428999999998
 load shed value => 273.68
-iterations => 13
+iterations => 16
 opt gap => 0.00
 interdicted branches
 4101 4131
@@ -15,11 +15,11 @@ interdicted branches
 4203 4204
 4004 4005
 bus load shed values
-4202 59.82 
+4202 20.57 
 6104 1.25 
 4102 6.31 
 4201 75.63 
 5001 99.4 
-4203 18.22 
+4203 57.48 
 4101 13.06 
-time => 7.81
+time => 7.15

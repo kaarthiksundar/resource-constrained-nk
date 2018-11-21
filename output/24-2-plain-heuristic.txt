@@ -12,4 +12,4 @@ bus load shed values
 10 2.54 
 6 0.1 
 5 1.36 
-time => 4.16
+time => 4.42
