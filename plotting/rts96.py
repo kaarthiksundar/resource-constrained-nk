@@ -19,7 +19,7 @@ for (key, value) in problem_type.items():
     for i in k:
         file = '../output/24-{}-{}-heuristic.txt'.format(i, value)
         if key == 2: 
-            file = '../output/24-{}-{}-10-heuristic.txt'.format(i, value)
+            file = '../output/24-{}-{}-5-heuristic.txt'.format(i, value)
         lines = open(file, 'r')
         load_shed = 0.0 
         time = 0.0 

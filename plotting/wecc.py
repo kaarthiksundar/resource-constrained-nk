@@ -21,7 +21,7 @@ for i in k:
         file = '../output/240-{}-planar-{}-heuristic.txt'.format(i, d)
         lines = open(file, 'r')
         for line in lines:
-            if re.match("iterations(.*)", line):
+            if re.match("load(.*)", line):
                 load_shed_values[i]['x'].append(d) 
                 load_shed_values[i]['y'].append(float(re.split('\s+', line.rstrip())[-1]))
 
@@ -74,7 +74,10 @@ plt.rc('text', usetex=True)
 fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')
 ax.view_init(elev=31, azim=-143)
-ax.grid(False)
+ax.grid(True)
+ax.yaxis._axinfo["grid"]['linewidth'] = 0.2
+ax.xaxis._axinfo["grid"]['linewidth'] = 0.2
+ax.zaxis._axinfo["grid"]['linewidth'] = 0.2
 for c, z in zip(['r', 'g', 'b', 'y', 'c'], [2, 3, 4, 5, 6]):
     xs = [1,2,3,4,5,6,7,8,9,10]
     ys = load_shed_values[z]['y']
@@ -93,10 +96,10 @@ ylabels = [r'$k=2$', r'$k=3$', r'$k=4$', r'$k=5$', r'$k=6$']
 ax.set_yticklabels(ylabels)
 ax.set_yticks([2, 3, 4, 5, 6])
 
-zlabels = [0, 10, 20, 30, 40]
+zlabels = [0, 100, 200, 300, 400]
 ax.set_zticklabels(zlabels)
-ax.set_zticks([0, 10, 20, 30, 40])
+ax.set_zticks([0, 100, 200, 300, 400])
 
-
-ax.set_zlabel('iterations')
-plt.savefig('iterations.pdf', format='pdf')
+ax.zaxis.label.set_rotation(0)
+ax.set_zlabel('load shed (p.u.)')
+plt.savefig('load-shed.pdf', format='pdf')
