@@ -1,4 +1,4 @@
-.DS_Store
+*.DS_Store
 src/logs/*
 *.html
 *.pdf

@@ -4,6 +4,19 @@ import json
 import branca
 import re
 
+from math import sin, cos, sqrt, atan2, radians
+
+# approximate radius of earth in km
+R = 6373.0
+
+def dist(lat1, lon1, lat2, lon2):
+    dlon = lon2 - lon1
+    dlat = lat2 - lat1
+    a = sin(dlat / 2)**2 + cos(lat1) * cos(lat2) * sin(dlon / 2)**2
+    c = 2 * atan2(sqrt(a), sqrt(1 - a))
+    return R * c
+
+
 
 attr = ('&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> '
         'contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>')
@@ -92,11 +105,21 @@ while (i < len(lines)):
             i += 1
     i += 1
 
+print(branches)
 for branch in branches:
     f_bus = branch[0]
     t_bus = branch[1]
+    dx = 0.35
+    folium.Rectangle(
+    bounds=[[position[f_bus][0]-dx, position[f_bus][1]+dx], [position[f_bus][0]+dx, position[f_bus][1]-dx]],
+    line_join='bevel',
+    color='red').add_to(m)
+    folium.Rectangle(
+    bounds=[[position[t_bus][0]-dx, position[t_bus][1]+dx], [position[t_bus][0]+dx, position[t_bus][1]-dx]],
+    line_join='bevel',
+    color='red').add_to(m)
     value = [list(position[f_bus]), list(position[t_bus])]
-    # folium.PolyLine(value, color='red', weight=2).add_to(m)
+    folium.PolyLine(value, color='red', weight=3).add_to(m)
 
 total_shed = sum(bus_shed.values())
 for (bus_id, value) in bus_shed.items():
